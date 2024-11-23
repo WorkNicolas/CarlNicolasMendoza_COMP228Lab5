@@ -81,7 +81,10 @@ public class DatabaseManager {
         String query = "SELECT * FROM Player";
         List<Player> playerList = new ArrayList<>();  // Initialize an ArrayList to hold Player objects
 
-        try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (
+            Connection conn = connect();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 // Create a Player object using data from the ResultSet
                 Player player = new Player(
@@ -104,20 +107,48 @@ public class DatabaseManager {
 
     public void updatePlayer(int playerId, String firstName, String lastName, String address, String postalCode, String province, String phoneNumber) {
         String query = "UPDATE Player SET first_name = ?, last_name = ?, address = ?, postal_Code = ?, province = ?, phone_number = ? WHERE player_id = ?";
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setString(3, address);
-            pstmt.setString(4, postalCode);
-            pstmt.setString(5, province);
-            pstmt.setString(6, phoneNumber);
-            pstmt.setInt(7, playerId);
-            pstmt.executeUpdate();
-            System.out.println("Player updated successfully.");
+        try (
+            Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, firstName);
+                pstmt.setString(2, lastName);
+                pstmt.setString(3, address);
+                pstmt.setString(4, postalCode);
+                pstmt.setString(5, province);
+                pstmt.setString(6, phoneNumber);
+                pstmt.setInt(7, playerId);
+                pstmt.executeUpdate();
+                System.out.println("Player updated successfully."
+            );
         } catch (SQLException e) {
             System.out.println("Error updating player: " + e.getMessage());
         }
     }
+
+public Player getPlayerById(int playerId) {
+    String query = "SELECT * FROM Player WHERE player_id = ?";
+    Player player = new Player();
+    try (
+            Connection conn = connect();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query)) {
+        while (rs.next()) {
+            // Create a Player object using data from the ResultSet
+            player = new Player(
+                    rs.getInt("player_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("address"),
+                    rs.getString("postal_code"),
+                    rs.getString("province"),
+                    rs.getString("phone_number")
+            );
+        }
+    } catch (SQLException e) {
+        System.out.println("Error updating player: " + e.getMessage());
+    }
+    return player;
+}
 
     // CRUD operations for PlayerAndGame
     public void addPlayerAndGame(int gameId, int playerId, Date playingDate, int score) {

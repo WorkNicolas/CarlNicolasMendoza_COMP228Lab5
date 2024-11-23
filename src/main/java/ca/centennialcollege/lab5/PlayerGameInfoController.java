@@ -185,22 +185,28 @@ public class PlayerGameInfoController {
     // Update Player Button Action
     @FXML
     private void updatePlayer() {
-        String firstName = firstNameField_Update.getText();
-        String lastName = lastNameField_Update.getText();
-        String address = addressField_Update.getText();
-        String postalCode = postalCodeField_Update.getText();
-        String province = provinceField_Update.getText();
-        String phoneNumber = phoneNumberField_Update.getText();
-
         // Player to be modified
         int playerId = Integer.parseInt(playerIdComboBox.getValue().toString());
 
+        // Retrieve current player data
+        Player currentPlayer = databaseManager.getPlayerById(playerId);
+
+        // Use current value if the TextField is empty
+        String firstName = firstNameField_Update.getText().isEmpty() ? currentPlayer.getFirstName() : firstNameField_Update.getText();
+        String lastName = lastNameField_Update.getText().isEmpty() ? currentPlayer.getLastName() : lastNameField_Update.getText();
+        String address = addressField_Update.getText().isEmpty() ? currentPlayer.getAddress() : addressField_Update.getText();
+        String postalCode = postalCodeField_Update.getText().isEmpty() ? currentPlayer.getPostalCode() : postalCodeField_Update.getText();
+        String province = provinceField_Update.getText().isEmpty() ? currentPlayer.getProvince() : provinceField_Update.getText();
+        String phoneNumber = phoneNumberField_Update.getText().isEmpty() ? currentPlayer.getPhoneNumber() : phoneNumberField_Update.getText();
+
+        // Show confirmation alert
         showAlert(
                 "Player Update",
                 "Updated " + firstName + " " + lastName,
                 "You've successfully updated " + firstName + " " + lastName + " from the Player table"
         );
 
+        // Update the player in the database
         databaseManager.updatePlayer(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
     }
 
