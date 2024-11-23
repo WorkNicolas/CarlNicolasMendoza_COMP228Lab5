@@ -1,0 +1,73 @@
+# IntelliJ IDEA-specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Build output directories
+/out/
+build/
+target/
+
+# Gradle files
+.gradle/
+*.gradle
+gradle-app.setting
+.gradle-cache/
+!gradlew
+!gradlew.bat
+!gradle-wrapper.jar
+
+# Maven files
+.mvn/
+pom.xml.versionsBackup
+release.properties
+
+# Java bytecode files
+*.class
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Libraries and dependencies
+lib/
+dependency-reduced-pom.xml
+
+# JAR/WAR/EAR files
+*.jar
+*.war
+*.ear
+
+# Generated files (e.g., by JavaFX Scene Builder)
+*.fxml~
+
+# IDE-specific configurations
+.vscode/
+.vscode/*
+
+# Cache and settings for Java tooling
+.settings/
+.cache/
+.project
+.classpath
+node_modules/
+
+# Environment or secret files
+.env
+.env.*
+*.key
+*.pem
+
+# Files created during testing
+/test-output/
+surefire-reports/

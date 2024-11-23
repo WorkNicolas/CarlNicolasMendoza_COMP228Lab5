@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.control.TextField?>
+
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ComboBox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ca.centennialcollege.lab5.PlayerGameInfoController">
+    <top>
+        <FlowPane xmlns="http://javafx.com/javafx"
+                  xmlns:fx="http://javafx.com/fxml"
+                  alignment="CENTER"
+        >
+            <GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10" alignment="CENTER" style="-fx-padding: 20;">
+                <Label fx:id="playerInfoLabel" text="Insert Player Info" GridPane.rowIndex="0" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 24px; -fx-padding: 0; -fx-font-weight: bold;" />
+                <Label fx:id="firstNameLabel" text="First Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="firstNameField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-padding: 1;" />
+                <Label fx:id="lastNameLabel" text="Last Name:" GridPane.rowIndex="2" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="lastNameField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-padding: 1;" />
+                <Label fx:id="addressLabel" text="Address:" GridPane.rowIndex="3" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="addressNameField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-padding: 1;" />
+                <Label fx:id="postalCodeLabel" text="Postal Code:" GridPane.rowIndex="4" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="postalCodeField" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-padding: 1;" />
+                <Label fx:id="provinceLabel" text="Province:" GridPane.rowIndex="5" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="provinceField" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-padding: 1;" />
+                <Label fx:id="phoneNumberLabel" text="Phone Number:" GridPane.rowIndex="6" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="phoneNumberField" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-padding: 1;" />
+                <Button fx:id="insertPlayerButton" text="Insert Player" GridPane.rowIndex="7" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 10;" onAction="#insertPlayer"/>
+                <Label fx:id="gameInfoLabel" text="Insert Game Info" GridPane.rowIndex="8" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 24px; -fx-padding: 0; -fx-font-weight: bold;" />
+                <Label fx:id="gameTitleLabel" text="Game Title:" GridPane.rowIndex="9" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="gameTitleField" GridPane.rowIndex="9" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-padding: 10;" />
+                <Button fx:id="insertGameButton" text="Insert Game" GridPane.rowIndex="10" GridPane.columnIndex="0" wrapText="true" style="-fx-font-size: 14px; -fx-padding: 10;" onAction="#insertGame" />
+                <!-- Update Section -->
+                <Label fx:id="playerInfoLabel_Update" text="Update Player Info" GridPane.rowIndex="0" GridPane.columnIndex="2" wrapText="true" style="-fx-font-size: 24px; -fx-padding: 0; -fx-font-weight: bold;" />
+                <Label text="First Name:" GridPane.rowIndex="1" GridPane.columnIndex="2" style="-fx-font-size: 14px;" />
+                <TextField fx:id="firstNameField_Update" GridPane.rowIndex="1" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Label text="Last Name:" GridPane.rowIndex="2" GridPane.columnIndex="2" style="-fx-font-size: 14px;" />
+                <TextField fx:id="lastNameField_Update" GridPane.rowIndex="2" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Label text="Address:" GridPane.rowIndex="3" GridPane.columnIndex="2" style="-fx-font-size: 14px;" />
+                <TextField fx:id="addressField_Update" GridPane.rowIndex="3" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Label text="Postal Code:" GridPane.rowIndex="4" GridPane.columnIndex="2" style="-fx-font-size: 14px;" />
+                <TextField fx:id="postalCodeField_Update" GridPane.rowIndex="4" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Label text="Province:" GridPane.rowIndex="5" GridPane.columnIndex="2" style="-fx-font-size: 14px;" />
+                <TextField fx:id="provinceField_Update" GridPane.rowIndex="5" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Label text="Phone Number:" GridPane.rowIndex="6" GridPane.columnIndex="2" style="-fx-font-size: 14px;" />
+                <TextField fx:id="phoneNumberField_Update" GridPane.rowIndex="6" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Button fx:id="updatePlayerButton" text="Update Player" GridPane.rowIndex="7" GridPane.columnIndex="2" style="-fx-font-size: 14px; -fx-padding: 10;" onAction="#updatePlayer" />
+                <Label fx:id="playerIdLabel" text="Player ID" GridPane.rowIndex="8" GridPane.columnIndex="2" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <ComboBox fx:id="playerIdComboBox" GridPane.rowIndex="8" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Label fx:id="gameInfoLabel_Update" text="Update Game Info" GridPane.rowIndex="9" GridPane.columnIndex="2" wrapText="true" style="-fx-font-size: 24px; -fx-padding: 0; -fx-font-weight: bold;" />
+                <Label fx:id="gameTitleLabel_Update" text="Game Title:" GridPane.rowIndex="10" GridPane.columnIndex="2" style="-fx-font-size: 14px;" />
+                <TextField fx:id="gameTitleField_Update" GridPane.rowIndex="10" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <Button fx:id="updateGameButton" text="Update Game" GridPane.rowIndex="11" GridPane.columnIndex="2" style="-fx-font-size: 14px; -fx-padding: 10;" onAction="#updateGame" />
+                <Label fx:id="gameIdLabel" text="Game ID" GridPane.rowIndex="12" GridPane.columnIndex="2" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <ComboBox fx:id="gameIdComboBox" GridPane.rowIndex="12" GridPane.columnIndex="3" style="-fx-font-size: 14px;" />
+                <!-- Insert Player and Game Info -->
+                <Label fx:id="playerAndGameInfo" text="Player and Game Info" GridPane.rowIndex="0" GridPane.columnIndex="4" wrapText="true" style="-fx-font-size: 24px; -fx-padding: 0; -fx-font-weight: bold;" />
+                <Label fx:id="gameIdLabel_Pag" text="Game ID:" GridPane.rowIndex="1" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <ComboBox fx:id="gameIdComboBox_Pag" GridPane.rowIndex="1" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Label fx:id="playerIdLabel_Pag" text="Player ID:" GridPane.rowIndex="2" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <ComboBox fx:id="playerIdComboBox_Pag" GridPane.rowIndex="2" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Label fx:id="playingDateLabel" text="Playing Date:" GridPane.rowIndex="3" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="playingDateField" GridPane.rowIndex="3" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Label fx:id="scoreLabel" text="Score:" GridPane.rowIndex="4" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="scoreField" GridPane.rowIndex="4" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Button fx:id="insertPagButton" text="Insert Played Games" GridPane.rowIndex="5" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 10;" />
+                <!-- Update Player and Game Info -->
+                <Label fx:id="playerAndGameInfo_Update" text="Update Player and Game Info" GridPane.rowIndex="6" GridPane.columnIndex="4" wrapText="true" style="-fx-font-size: 24px; -fx-padding: 0; -fx-font-weight: bold;" />
+                <Label fx:id="gameIdLabel_Pag_Update" text="Game ID:" GridPane.rowIndex="7" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="gameIdField_Pag_Update" GridPane.rowIndex="7" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Label fx:id="playerIdLabel_Pag_Update" text="Player ID:" GridPane.rowIndex="8" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="playerIdField_Pag_Update" GridPane.rowIndex="8" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Label fx:id="playingDateLabel_Update" text="Playing Date:" GridPane.rowIndex="9" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="playingDateField_Update" GridPane.rowIndex="9" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Label fx:id="scoreLabel_Update" text="Score:" GridPane.rowIndex="10" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
+                <TextField fx:id="scoreField_Update" GridPane.rowIndex="10" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
+                <Button fx:id="insertPagButton_Update" text="Insert Played Games" GridPane.rowIndex="11" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 10;" onAction="#updatePlayerAndGame" />
+            </GridPane>
+        </FlowPane>
+    </top>
+    <bottom>
+        <VBox
+                xmlns="http://javafx.com/javafx"
+                xmlns:fx="http://javafx.com/fxml"
+                alignment="CENTER"
+        >
+            <Button fx:id="displayButton" text="Display" style="-fx-fontsize: 14px; -fx-padding: 10;" />
+        </VBox>
+    </bottom>
+</BorderPane>
+
