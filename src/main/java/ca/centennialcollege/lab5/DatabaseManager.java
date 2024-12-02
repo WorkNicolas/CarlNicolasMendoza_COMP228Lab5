@@ -24,7 +24,7 @@ public class DatabaseManager {
     }
 
     // CRUD operations for Game
-    public void addGame(String gameTitle) {
+    public boolean addGame(String gameTitle) {
         String query = "INSERT INTO CarlNicolas_Mendoza_Game (game_id, game_title) VALUES (game_id_seq.NEXTVAL, ?)";
         try (
                 Connection conn = connect();
@@ -34,8 +34,11 @@ public class DatabaseManager {
                 pstmt.executeUpdate();
                 System.out.println("Game added successfully.");
             } catch (SQLException e) {
-            System.out.println("Error adding game: " + e.getMessage());
+                System.out.println("Error adding game: " + e.getMessage());
+                return false;
         }
+        System.out.println("Success: Added Game");
+        return true;
     }
 
 
@@ -62,7 +65,7 @@ public class DatabaseManager {
         return gameList;
     }
 
-    public void updateGame(int gameId, String gameTitle) {
+    public boolean updateGame(int gameId, String gameTitle) {
         String query = "UPDATE " + gameTable + " SET game_title = ? WHERE game_id = ?";
         try (
                 Connection conn = connect();
@@ -73,8 +76,10 @@ public class DatabaseManager {
                 pstmt.executeUpdate();
                 System.out.println("Game updated successfully.");
             } catch (SQLException e) {
-            System.out.println("Error updating game: " + e.getMessage());
+                System.out.println("Error updating game: " + e.getMessage());
+                return false;
         }
+        return true;
     }
 
     // CRUD operations for Player
@@ -129,7 +134,7 @@ public class DatabaseManager {
         return playerList;
     }
 
-    public void updatePlayer(int playerId, String firstName, String lastName, String address, String postalCode, String province, String phoneNumber) {
+    public boolean updatePlayer(int playerId, String firstName, String lastName, String address, String postalCode, String province, String phoneNumber) {
         String query = "UPDATE " + playerTable + " SET first_name = ?, last_name = ?, address = ?, postal_Code = ?, province = ?, phone_number = ? WHERE player_id = ?";
         try (
                 Connection conn = connect();
@@ -145,8 +150,11 @@ public class DatabaseManager {
                 pstmt.executeUpdate();
                 System.out.println("Player updated successfully.");
             } catch (SQLException e) {
-            System.out.println("Error updating player: " + e.getMessage());
+                System.out.println("Error updating player: " + e.getMessage());
+                return false;
         }
+        System.out.println("Updated: Player");
+        return true;
     }
 
     // CRUD operations for PlayerAndGame
@@ -204,7 +212,7 @@ public class DatabaseManager {
     }
 
 
-    public void updatePlayerAndGame(int gameId, int playerId, Date playingDate, int score) {
+    public boolean updatePlayerAndGame(int gameId, int playerId, Date playingDate, int score) {
         String query = "UPDATE " + playerAndGameTable + " SET playing_date = ?, score = ? WHERE game_id = ? AND player_id = ?";
         try (
                 Connection conn = connect();
@@ -224,6 +232,9 @@ public class DatabaseManager {
                 }
             } catch (SQLException e) {
                 System.out.println("Error updating player and game relationship: " + e.getMessage());
+                return false;
         }
+        System.out.println("Updated: PlayerAndGame");
+        return true;
     }
 }

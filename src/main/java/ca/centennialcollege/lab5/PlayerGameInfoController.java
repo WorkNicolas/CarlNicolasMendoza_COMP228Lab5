@@ -242,12 +242,21 @@ public class PlayerGameInfoController {
     @FXML
     private void insertGame() {
         String gameTitle = gameTitleField.getText();
-        showAlert(
-                "Game Insertion",
-                "Inserted " + gameTitle,
-                "You've successfully inserted " + gameTitle + " into the Game table"
-        );
-        databaseManager.addGame(gameTitle);
+        boolean success = databaseManager.addGame(gameTitle);
+        if (success) {
+            showAlert(
+                    "Game Insertion",
+                    "Inserted " + gameTitle,
+                    "You've successfully inserted " + gameTitle + " into the Game table"
+            );
+        } else {
+            showAlert(
+                    "Game Insertion Failed",
+                    "Failed to insert " + gameTitle,
+                    "Please check if your database connection is working."
+            );
+        }
+
         initialize();
     }
 
@@ -264,13 +273,22 @@ public class PlayerGameInfoController {
         // Player to be modified
         int playerId = Integer.parseInt(playerIdComboBox.getValue().toString());
 
-        showAlert(
-                "Player Update",
-                "Updated " + firstName + " " + lastName,
-                "You've successfully updated " + firstName + " " + lastName + " from the Player table"
-        );
+        boolean success = databaseManager.updatePlayer(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
 
-        databaseManager.updatePlayer(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
+        if (success) {
+            showAlert(
+                    "Player Update",
+                    "Updated " + firstName + " " + lastName,
+                    "You've successfully updated " + firstName + " " + lastName + " from the Player table"
+            );
+        } else {
+            showAlert(
+                    "Player Update Failed",
+                    "You've failed to update " + firstName + " " + lastName,
+                    "Please check if your database connection is working."
+            );
+        }
+
     }
     // Insert Player Button Action
     @FXML
@@ -291,7 +309,7 @@ public class PlayerGameInfoController {
             initialize();
         } else {
             showAlert(
-                    "Player Insertion Failed",
+                    "Player and Game Insertion Failed",
                     "Failed to insert game_id:" + gameId + " and player_id: " + playerId,
                     "Please check if your database connection is working."
             );
@@ -306,13 +324,23 @@ public class PlayerGameInfoController {
         // Game to be modified
         int gameId = Integer.parseInt(gameIdComboBox.getValue().toString());
 
-        showAlert(
-                "Game Update",
-                "Updated " + gameTitle,
-                "You've successfully updated " + gameTitle + " from the Game table"
-        );
+        boolean success = databaseManager.updateGame(gameId, gameTitle);
 
-        databaseManager.updateGame(gameId, gameTitle);
+        if (success) {
+            showAlert(
+                    "Player And Game Update",
+                    "Updated game_id:" + gameId + " and player_id:" + playerId,
+                    "You've successfully updated game_id:" + gameId + " and player_id:" + playerId + " into the Player table"
+            );
+        } else {
+            showAlert(
+                    "Player and Game Update Failed",
+                    "Failed to update game_id:" + gameId + " and player_id: " + playerId,
+                    "Please check if your database connection is working."
+            );
+        }
+
+
     }
 
     // Update Player And Game Action
@@ -325,8 +353,21 @@ public class PlayerGameInfoController {
         Date sqlPlayingDate = Date.valueOf(playingLocalDate);
         int score = Integer.parseInt(scoreField_Update.getText());
 
-        // Call the DatabaseManager to update the player-game relationship
-        databaseManager.updatePlayerAndGame(gameId, playerId, sqlPlayingDate, score);
+        boolean success = databaseManager.updatePlayerAndGame(gameId, playerId, sqlPlayingDate, score);
+
+        if (success) {
+            showAlert(
+                    "Player and Game Update",
+                    "Updated player" + gameTitle,
+                    "You've successfully updated " + gameTitle + " from the Game table"
+            );
+        } else {
+            showAlert(
+                    "Game Update Failed",
+                    "Failed to update " + gameTitle,
+                    "Please check if your database connection is working."
+            );
+        }
     }
 
 
