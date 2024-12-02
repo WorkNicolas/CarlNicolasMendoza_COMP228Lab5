@@ -74,7 +74,7 @@
                 <DatePicker fx:id="playingDatePicker" GridPane.rowIndex="3" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
                 <Label fx:id="scoreLabel" text="Score:" GridPane.rowIndex="4" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />
                 <TextField fx:id="scoreField" GridPane.rowIndex="4" GridPane.columnIndex="5" style="-fx-font-size: 14px;" />
-                <Button fx:id="insertPagButton" text="Insert Played Games" GridPane.rowIndex="5" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 10;" />
+                <Button fx:id="insertPagButton" text="Insert Played Games" GridPane.rowIndex="5" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 10;" onAction="#insertPlayerAndGame"/>
                 <!-- Update Player and Game Info -->
                 <Label fx:id="playerAndGameInfo_Update" text="Update Player and Game Info" GridPane.rowIndex="6" GridPane.columnIndex="4" wrapText="true" style="-fx-font-size: 24px; -fx-padding: 0; -fx-font-weight: bold;" />
                 <Label fx:id="gameIdLabel_Pag_Update" text="Game ID:" GridPane.rowIndex="7" GridPane.columnIndex="4" style="-fx-font-size: 14px; -fx-padding: 0;" />

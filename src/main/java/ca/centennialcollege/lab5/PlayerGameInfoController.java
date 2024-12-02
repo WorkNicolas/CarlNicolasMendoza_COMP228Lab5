@@ -294,10 +294,19 @@ public class PlayerGameInfoController {
         String phoneNumber = phoneNumberField_Update.getText().trim();
 
         // Player to be modified
-        int playerId = Integer.parseInt(playerIdComboBox.getValue().toString());
+        Player selectedPlayer = (Player) playerIdComboBox.getValue();
+        if (selectedPlayer == null) {
+            showAlert(
+                    "Invalid Input",
+                    "Player Selection Failed",
+                    "Please select a valid player."
+            );
+            return;
+        }
+        Integer playerId = selectedPlayer.getPlayerId();
 
         // Check if any field is empty
-        if (firstName.isEmpty() || lastName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || province.isEmpty() || phoneNumber.isEmpty()) {
+        if (playerId == null || firstName.isEmpty() || lastName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || province.isEmpty() || phoneNumber.isEmpty()) {
             showAlert(
                     "Invalid Input",
                     "Player Update Failed",
@@ -305,6 +314,7 @@ public class PlayerGameInfoController {
             );
             return;
         }
+
 
         boolean success = databaseManager.updatePlayer(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
 
@@ -391,17 +401,17 @@ public class PlayerGameInfoController {
         }
 
         // Get the selected game ID from the ComboBox
-        Integer gameId = gameIdComboBox.getValue() != null ? Integer.parseInt(gameIdComboBox.getValue().toString()) : null;
-
-        // Validate that a game ID is selected
-        if (gameId == null) {
+        Game selectedGame = (Game) gameIdComboBox.getValue();
+        if (selectedGame == null) {
             showAlert(
                     "Invalid Input",
-                    "Game Update Failed",
-                    "Please select a valid game ID."
+                    "Game Selection Failed",
+                    "Please select a valid game."
             );
             return;
         }
+
+        int gameId = selectedGame.getGameId();
 
         boolean success = databaseManager.updateGame(gameId, gameTitle);
 
