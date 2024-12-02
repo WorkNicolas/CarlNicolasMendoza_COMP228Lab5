@@ -3,6 +3,7 @@ package ca.centennialcollege.lab5;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +18,13 @@ public class PlayerGameInfoApp extends Application {
 
         // Stage
         stage.setTitle("Player Played Games Data");
+
+        // Get screen resolution (primary monitor)
+        Screen primaryScreen = Screen.getPrimary();
+        double screenWidth = primaryScreen.getVisualBounds().getWidth();
+        double screenHeight = primaryScreen.getVisualBounds().getHeight();
+
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
