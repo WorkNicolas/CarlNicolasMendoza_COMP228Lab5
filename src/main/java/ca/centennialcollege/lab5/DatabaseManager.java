@@ -150,8 +150,9 @@ public class DatabaseManager {
     }
 
     // CRUD operations for PlayerAndGame
-    public void addPlayerAndGame(int gameId, int playerId, Date playingDate, int score) {
-        String query = "INSERT INTO " + playerAndGameTable + " (game_id, player_id, playing_date, score) VALUES (?, ?, ?, ?)";
+    public boolean addPlayerAndGame(int gameId, int playerId, Date playingDate, int score) {
+        String query = "INSERT INTO " + playerAndGameTable + " (player_game_id, game_id, player_id, playing_date, score) " +
+                "VALUES (player_game_id_seq.NEXTVAL, ?, ?, ?, ?)";
         try (
                 Connection conn = connect();
                 PreparedStatement pstmt = conn.prepareStatement(query)
@@ -163,8 +164,10 @@ public class DatabaseManager {
                 pstmt.executeUpdate();
                 System.out.println("Player and Game relationship added successfully.");
             } catch (SQLException e) {
-            System.out.println("Error adding player and game relationship: " + e.getMessage());
+                System.out.println("Error adding player and game relationship: " + e.getMessage());
+                return false;
         }
+        return true;
     }
 
     public List<PlayerAndGame> readPlayerAndGames(String player_id) {

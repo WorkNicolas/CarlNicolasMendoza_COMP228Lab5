@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +135,7 @@ public class PlayerGameInfoController {
     private Label playingDateLabel;
 
     @FXML
-    private TextField playingDateField;
+    private DatePicker playingDatePicker;
 
     @FXML
     private Label scoreLabel;
@@ -143,10 +144,35 @@ public class PlayerGameInfoController {
     private TextField scoreField;
 
     @FXML
+    private Label playerAndGameInfo_Update;
+
+    @FXML
+    private Label gameIdLabel_Pag_Update;
+
+    @FXML
     private ComboBox gameIdComboBox_Pag_Update;
 
     @FXML
+    private Label playerIdLabel_Pag_Update;
+
+    @FXML
     private ComboBox playerIdComboBox_Pag_Update;
+
+    @FXML
+    private Label playingDateLabel_Update;
+
+    @FXML
+    private DatePicker playingDatePicker_Update;
+
+    @FXML
+    private Label scoreLabel_Update;
+
+    @FXML
+    private TextField scoreField_Update;
+
+    @FXML
+    private Button insertPagButton_Update;
+
 
     // Bottom Border
     @FXML
@@ -246,6 +272,31 @@ public class PlayerGameInfoController {
 
         databaseManager.updatePlayer(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
     }
+    // Insert Player Button Action
+    @FXML
+    private void insertPlayerAndGame() {
+        int gameId = Integer.parseInt(gameIdComboBox_Pag.getValue().toString());
+        int playerId = Integer.parseInt(playerIdComboBox_Pag.getValue().toString());
+        LocalDate playingLocalDate = playingDatePicker.getValue();
+        Date sqlPlayingDate = Date.valueOf(playingLocalDate);
+        int score = Integer.parseInt(scoreField.getText());
+
+        boolean success = databaseManager.addPlayerAndGame(gameId, playerId, sqlPlayingDate, score);
+        if (success) {
+            showAlert(
+                    "Player and Game Insertion",
+                    "Inserted game_id:" + gameId + " and player_id:" + playerId,
+                    "You've successfully inserted game_id:" + gameId + " and player_id:" + playerId + " into the Player table"
+            );
+            initialize();
+        } else {
+            showAlert(
+                    "Player Insertion Failed",
+                    "Failed to insert game_id:" + gameId + " and player_id: " + playerId,
+                    "Please check if your database connection is working."
+            );
+        }
+    }
 
     // Update Game Button Action
     @FXML
@@ -268,16 +319,14 @@ public class PlayerGameInfoController {
     @FXML
     private void updatePlayerAndGame() {
         // Get input values from the text fields
-        int gameId = Integer.parseInt(gameIdComboBox.getValue().toString());
-        int playerId = Integer.parseInt(playerIdComboBox.getValue().toString());
-        String playingDateString = playingDateField.getText();
-        int score = Integer.parseInt(scoreField.getText());
-
-        // Convert playingDateString to a Date
-        Date playingDate = Date.valueOf(playingDateString);  // Example format: "YYYY-MM-DD"
+        int gameId = Integer.parseInt(gameIdComboBox_Pag_Update.getValue().toString());
+        int playerId = Integer.parseInt(playerIdComboBox_Pag_Update.getValue().toString());
+        LocalDate playingLocalDate = playingDatePicker_Update.getValue();
+        Date sqlPlayingDate = Date.valueOf(playingLocalDate);
+        int score = Integer.parseInt(scoreField_Update.getText());
 
         // Call the DatabaseManager to update the player-game relationship
-        databaseManager.updatePlayerAndGame(gameId, playerId, playingDate, score);
+        databaseManager.updatePlayerAndGame(gameId, playerId, sqlPlayingDate, score);
     }
 
 
