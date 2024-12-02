@@ -23,6 +23,9 @@ public class PlayerGameInfoApp extends Application {
         Screen primaryScreen = Screen.getPrimary();
         double screenWidth = primaryScreen.getVisualBounds().getWidth();
         double screenHeight = primaryScreen.getVisualBounds().getHeight();
+        // Set stage size to maximum screen resolution
+        stage.setWidth(screenWidth);
+        stage.setHeight(screenHeight);
 
         stage.setResizable(false);
         stage.setScene(scene);
