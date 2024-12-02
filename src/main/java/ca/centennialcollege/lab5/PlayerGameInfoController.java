@@ -202,6 +202,7 @@ public class PlayerGameInfoController {
                     "Inserted " + firstName + " " + lastName,
                     "You've successfully inserted " + firstName + " " + lastName + " into the Player table"
             );
+            initialize();
         } else {
             showAlert(
                     "Player Insertion Failed",
