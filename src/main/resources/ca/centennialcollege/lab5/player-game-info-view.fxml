@@ -95,14 +95,13 @@
                 xmlns:fx="http://javafx.com/fxml"
                 alignment="CENTER"
         >
-            <Button fx:id="displayButton" text="Display" style="-fx-fontsize: 14px; -fx-padding: 10;" />
-            <ComboBox fx:id="pagComboBox" style="-fx-font-size: 14px;" />
+            <Button fx:id="displayButton" text="Display" style="-fx-fontsize: 14px; -fx-padding: 10;" onAction="#displayData" />
+            <ComboBox fx:id="pagComboBox" style="-fx-font-size: 14px;"  />
             <TableView fx:id="tableView" prefWidth="600">
                 <columns>
                     <TableColumn text="Player and Game ID" fx:id="pagId" />
                     <TableColumn text="Player ID" fx:id="playerId" />
                     <TableColumn text="Game ID" fx:id="gameId" />
-                    <TableColumn text="Game Title" fx:id="gameTitle" />
                     <TableColumn text="Playing Date" fx:id="playingDate" />
                     <TableColumn text="Score" fx:id="score" />
                 </columns>

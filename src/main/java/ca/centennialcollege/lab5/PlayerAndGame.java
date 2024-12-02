@@ -8,23 +8,13 @@ public class PlayerAndGame {
     private int player_id;
     private Date playing_date;
     private int score;
-    private Player player;
 
-    public PlayerAndGame(Player player, int player_game_id, int game_id, int player_id, Date playing_date, int score) {
-        this.player = player;
+    public PlayerAndGame(int player_game_id, int game_id, int player_id, Date playing_date, int score) {
         this.player_game_id = player_game_id;
         this.game_id = game_id;
         this.player_id = player_id;
         this.playing_date = playing_date;
         this.score = score;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public int getPlayerGameId() {
@@ -65,10 +55,5 @@ public class PlayerAndGame {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    @Override
-    public String toString() {
-        return player_id + " - " + player.getFirstName() + " " + player.getLastName();
     }
 }

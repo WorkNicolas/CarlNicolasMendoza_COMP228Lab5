@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -154,8 +155,28 @@ public class PlayerGameInfoController {
     @FXML
     private ComboBox pagComboBox;
 
+
+
+    // Tables
     @FXML
     private TableView tableView;
+
+    @FXML
+    private TableColumn<PlayerAndGame, Integer> pagId;
+
+    @FXML
+    private TableColumn<PlayerAndGame, Integer> playerId;
+
+    @FXML
+    private TableColumn<PlayerAndGame, Integer> gameId;
+
+    @FXML
+    private TableColumn<PlayerAndGame, Date> playingDate;
+
+    @FXML
+    private TableColumn<PlayerAndGame, Integer> score;
+
+
 
     // CRUD Operations
     private DatabaseManager databaseManager;
@@ -261,7 +282,8 @@ public class PlayerGameInfoController {
     // Display Players and Games Button Action
     @FXML
     private void displayData() {
-
+        ObservableList<PlayerAndGame> observablePagList = FXCollections.observableArrayList(pagSetter(pagComboBox));
+        tableView.setItems(observablePagList);
     }
 
     // Helper
@@ -273,15 +295,22 @@ public class PlayerGameInfoController {
         alert.showAndWait();
     }
 
+    public ObservableList<PlayerAndGame> pagSetter(ComboBox<Player> pagComboBox) {
+        Player selectedPlayer = pagComboBox.getSelectionModel().getSelectedItem();
+        int player_id = selectedPlayer.getPlayerId();
+        List<PlayerAndGame> pagList = databaseManager.readPlayerAndGames(String.valueOf(player_id));
+        ObservableList<PlayerAndGame> observablePagList = FXCollections.observableArrayList(pagList);
+        System.out.println("\nSelected  Player: " + selectedPlayer + "\n");
+        return observablePagList;
+    }
+
     public void initialize() {
         List<Player> playerList = databaseManager.readPlayers();
         List<Game> gameList = databaseManager.readGames();
-        List<PlayerAndGame> pagList = databaseManager.readPlayerAndGames();
 
         // Create observable lists
         ObservableList<Player> observablePlayerList = FXCollections.observableArrayList(playerList);
         ObservableList<Game> observableGameList = FXCollections.observableArrayList(gameList);
-        ObservableList<PlayerAndGame> observablePagList = FXCollections.observableArrayList(pagList);
 
         // Populate the ComboBoxes
         playerIdComboBox.setItems(observablePlayerList);
@@ -291,5 +320,23 @@ public class PlayerGameInfoController {
         playerIdComboBox_Pag_Update.setItems(observablePlayerList);
         gameIdComboBox_Pag_Update.setItems(observableGameList);
         pagComboBox.setItems(observablePlayerList);
+
+        // Configure TableView columns
+        pagId.setCellValueFactory(new PropertyValueFactory<>("playerGameId"));
+        playerId.setCellValueFactory(new PropertyValueFactory<>("playerId"));
+        gameId.setCellValueFactory(new PropertyValueFactory<>("gameId"));
+        playingDate.setCellValueFactory(new PropertyValueFactory<>("playingDate"));
+        score.setCellValueFactory(new PropertyValueFactory<>("score"));
+
+        // Populate the Table
+        if (!observablePlayerList.isEmpty()) {
+            System.out.println("There's something in pagComboBox!");
+            pagComboBox.getSelectionModel().select(0); // Select the first item
+            ObservableList<PlayerAndGame> observablePagList = FXCollections.observableArrayList(pagSetter(pagComboBox));
+            tableView.setItems(observablePagList);
+
+
+        }
+
     }
 }

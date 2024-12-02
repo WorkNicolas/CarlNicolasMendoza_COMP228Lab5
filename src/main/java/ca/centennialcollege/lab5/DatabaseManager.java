@@ -14,12 +14,12 @@ public class DatabaseManager {
     private static final String PASSWORD = dotenv.get("DB_PASS");
     private static final String gameTable = "CarlNicolas_Mendoza_Game";
     private static final String playerTable = "CarlNicolas_Mendoza_Player";
-    private static final String playerAndGameTable = "Carl_Mendoza_Player_And_Game";
+    private static final String playerAndGameTable = "cnvm_player_and_game";
 
     private Connection connect() throws SQLException {
         System.out.println("URL: " + URL);
         System.out.println("USER: " + USER);
-        System.out.println("PASSWORD: " + PASSWORD);
+        System.out.println("PASSWORD: " + PASSWORD + "\n");
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
@@ -38,7 +38,6 @@ public class DatabaseManager {
     public List<Game> readGames() {
         String query = "SELECT * FROM " + gameTable;
         List<Game> gameList = new ArrayList<>();
-
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 // Create a Game object using data from the ResultSet
@@ -51,7 +50,7 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("Error reading games: " + e.getMessage());
         }
-
+        System.out.println("\nSuccess: Game List\n");
         return gameList;
     }
 
@@ -83,6 +82,7 @@ public class DatabaseManager {
             System.out.println("Error adding player: " + e.getMessage());
             return false;
         }
+        System.out.println("Success: Added  Player");
         return true;
     }
 
@@ -107,7 +107,7 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("Error reading players: " + e.getMessage());
         }
-
+        System.out.println("Success: Player List");
         return playerList;
     }
 
@@ -143,12 +143,10 @@ public class DatabaseManager {
         }
     }
 
-    public List<PlayerAndGame> readPlayerAndGames() {
-        // Updated query to include additional fields from the Player table
-        String query = "SELECT pag.player_game_id, pag.game_id, pag.player_id, pag.playing_date, pag.score, " +
-                "p.first_name, p.last_name, p.address, p.postal_code, p.province, p.phone_number " +
-                "FROM " + playerAndGameTable + " pag " +
-                "JOIN " + playerTable + " p ON pag.player_id = p.player_id"; // Join Player table to get player details
+    public List<PlayerAndGame> readPlayerAndGames(String player_id) {
+        String query = "SELECT player_game_id, game_id, player_id, playing_date, score " +
+                "FROM " + playerAndGameTable + " " +
+                "WHERE player_id = " + player_id;
 
         List<PlayerAndGame> pagList = new ArrayList<>();
 
@@ -164,19 +162,8 @@ public class DatabaseManager {
                 Date playingDate = rs.getDate("playing_date");
                 int score = rs.getInt("score");
 
-                // Retrieve Player data from the Player table
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String address = rs.getString("address");
-                String postalCode = rs.getString("postal_code");
-                String province = rs.getString("province");
-                String phoneNumber = rs.getString("phone_number");
-
-                // Create Player object with the updated constructor
-                Player player = new Player(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
-
                 // Create PlayerAndGame object and set the Player object
-                PlayerAndGame pag = new PlayerAndGame(player, playerGameId, gameId, playerId, playingDate, score);
+                PlayerAndGame pag = new PlayerAndGame(playerGameId, gameId, playerId, playingDate, score);
 
                 // Add the PlayerAndGame object to the list
                 pagList.add(pag);
@@ -184,7 +171,7 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("Error reading PlayerAndGame data: " + e.getMessage());
         }
-
+        System.out.println("Success: PAG List");
         return pagList;
     }
 
