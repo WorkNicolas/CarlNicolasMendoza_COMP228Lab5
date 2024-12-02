@@ -25,8 +25,10 @@ public class DatabaseManager {
 
     // CRUD operations for Game
     public void addGame(String gameTitle) {
-        String query = "INSERT INTO CarlNicolas_Mendoza_Game (game_title) VALUES (?)";
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+        String query = "INSERT INTO CarlNicolas_Mendoza_Game (game_id, game_title) VALUES (game_id_seq.NEXTVAL, ?)";
+        try (
+                Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, gameTitle);
             pstmt.executeUpdate();
             System.out.println("Game added successfully.");
@@ -34,6 +36,7 @@ public class DatabaseManager {
             System.out.println("Error adding game: " + e.getMessage());
         }
     }
+
 
     public List<Game> readGames() {
         String query = "SELECT * FROM " + gameTable;

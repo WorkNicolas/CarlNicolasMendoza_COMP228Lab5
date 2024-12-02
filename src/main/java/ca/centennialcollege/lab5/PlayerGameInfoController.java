@@ -221,6 +221,7 @@ public class PlayerGameInfoController {
                 "You've successfully inserted " + gameTitle + " into the Game table"
         );
         databaseManager.addGame(gameTitle);
+        initialize();
     }
 
     // Update Player Button Action
@@ -327,16 +328,6 @@ public class PlayerGameInfoController {
         gameId.setCellValueFactory(new PropertyValueFactory<>("gameId"));
         playingDate.setCellValueFactory(new PropertyValueFactory<>("playingDate"));
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
-
-        // Populate the Table
-        if (!observablePlayerList.isEmpty()) {
-            System.out.println("There's something in pagComboBox!");
-            pagComboBox.getSelectionModel().select(0); // Select the first item
-            ObservableList<PlayerAndGame> observablePagList = FXCollections.observableArrayList(pagSetter(pagComboBox));
-            tableView.setItems(observablePagList);
-
-
-        }
 
     }
 }
