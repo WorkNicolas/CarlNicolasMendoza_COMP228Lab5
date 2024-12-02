@@ -452,14 +452,12 @@ public class PlayerGameInfoController {
     // Update Player And Game Action
     @FXML
     private void updatePlayerAndGame() {
-        // Get input values from the text fields
-        Integer gameId = gameIdComboBox_Pag_Update.getValue() != null ? Integer.parseInt(gameIdComboBox_Pag_Update.getValue().toString()) : null;
-        Integer playerId = playerIdComboBox_Pag_Update.getValue() != null ? Integer.parseInt(playerIdComboBox_Pag_Update.getValue().toString()) : null;
-        LocalDate playingLocalDate = playingDatePicker_Update.getValue();
-        String scoreText = scoreField_Update.getText().trim();
+        // Get the selected Game and Player objects
+        Game selectedGame = (Game) gameIdComboBox_Pag_Update.getValue();
+        Player selectedPlayer = (Player) playerIdComboBox_Pag_Update.getValue();
 
-        // Validate that game ID, player ID, playing date, and score are valid
-        if (gameId == null) {
+        // Check if either the selected Game or Player is null
+        if (selectedGame == null) {
             showAlert(
                     "Invalid Input",
                     "Update Failed",
@@ -468,7 +466,7 @@ public class PlayerGameInfoController {
             return;
         }
 
-        if (playerId == null) {
+        if (selectedPlayer == null) {
             showAlert(
                     "Invalid Input",
                     "Update Failed",
@@ -477,6 +475,13 @@ public class PlayerGameInfoController {
             return;
         }
 
+        Integer gameId = selectedGame.getGameId(); // Assuming Game object has getGameId() method
+        Integer playerId = selectedPlayer.getPlayerId(); // Assuming Player object has getPlayerId() method
+
+        LocalDate playingLocalDate = playingDatePicker_Update.getValue();
+        String scoreText = scoreField_Update.getText().trim();
+
+        // Validate that playing date and score are valid
         if (playingLocalDate == null) {
             showAlert(
                     "Invalid Input",
@@ -511,19 +516,20 @@ public class PlayerGameInfoController {
         // Convert playing date to SQL Date
         Date sqlPlayingDate = Date.valueOf(playingLocalDate);
 
+        // Update the player and game relationship in the database
         boolean success = databaseManager.updatePlayerAndGame(gameId, playerId, sqlPlayingDate, score);
 
         if (success) {
             showAlert(
                     "Player And Game Update",
                     "Updated game_id:" + gameId + " and player_id:" + playerId,
-                    "You've successfully updated game_id:" + gameId + " and player_id:" + playerId + " into the Player table"
+                    "You've successfully updated game_id:" + gameId + " and player_id:" + playerId + " in the Player table"
             );
             initialize();
         } else {
             showAlert(
                     "Player and Game Update Failed",
-                    "Failed to update game_id:" + gameId + " and player_id: " + playerId,
+                    "Failed to update game_id:" + gameId + " and player_id:" + playerId,
                     "Please check if your database connection is working."
             );
         }
