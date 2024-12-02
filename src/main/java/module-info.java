@@ -3,6 +3,7 @@ module ca.centennialcollege.lab5 {
     requires javafx.fxml;
     requires java.sql;
     requires java.dotenv;
+    requires com.oracle.database.jdbc;
 
 
     opens ca.centennialcollege.lab5 to javafx.fxml;

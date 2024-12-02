@@ -9,9 +9,6 @@ public class Player {
     private String province;
     private String phone_number;
 
-    public Player() {
-
-    }
     public Player(int player_id, String first_name, String last_name, String address, String postal_code, String province, String phone_number) {
         this.player_id = player_id;
         this.first_name = first_name;

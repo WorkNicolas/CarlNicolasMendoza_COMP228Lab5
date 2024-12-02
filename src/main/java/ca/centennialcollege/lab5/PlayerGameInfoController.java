@@ -1,5 +1,7 @@
 package ca.centennialcollege.lab5;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -139,9 +141,21 @@ public class PlayerGameInfoController {
     @FXML
     private TextField scoreField;
 
-    // Display
+    @FXML
+    private ComboBox gameIdComboBox_Pag_Update;
+
+    @FXML
+    private ComboBox playerIdComboBox_Pag_Update;
+
+    // Bottom Border
     @FXML
     private Button displayButton;
+
+    @FXML
+    private ComboBox pagComboBox;
+
+    @FXML
+    private TableView tableView;
 
     // CRUD Operations
     private DatabaseManager databaseManager;
@@ -160,14 +174,20 @@ public class PlayerGameInfoController {
         String postalCode = postalCodeField.getText();
         String province = provinceField.getText();
         String phoneNumber = phoneNumberField.getText();
-
-        showAlert(
-                "Player Insertion",
-                "Inserted " + firstName + " " + lastName,
-                "You've successfully inserted " + firstName + " " + lastName + " into the Player table"
-        );
-
-        databaseManager.addPlayer(firstName, lastName, address, postalCode, province, phoneNumber);
+        boolean success = databaseManager.addPlayer(firstName, lastName, address, postalCode, province, phoneNumber);
+        if (success) {
+            showAlert(
+                    "Player Insertion",
+                    "Inserted " + firstName + " " + lastName,
+                    "You've successfully inserted " + firstName + " " + lastName + " into the Player table"
+            );
+        } else {
+            showAlert(
+                    "Player Insertion Failed",
+                    "Failed to insert " + firstName + " " + lastName,
+                    "Please check if your database connection is working."
+            );
+        }
     }
 
     // Insert Game Button Action
@@ -185,28 +205,22 @@ public class PlayerGameInfoController {
     // Update Player Button Action
     @FXML
     private void updatePlayer() {
+        String firstName = firstNameField_Update.getText();
+        String lastName = lastNameField_Update.getText();
+        String address = addressField_Update.getText();
+        String postalCode = postalCodeField_Update.getText();
+        String province = provinceField_Update.getText();
+        String phoneNumber = phoneNumberField_Update.getText();
+
         // Player to be modified
         int playerId = Integer.parseInt(playerIdComboBox.getValue().toString());
 
-        // Retrieve current player data
-        Player currentPlayer = databaseManager.getPlayerById(playerId);
-
-        // Use current value if the TextField is empty
-        String firstName = firstNameField_Update.getText().isEmpty() ? currentPlayer.getFirstName() : firstNameField_Update.getText();
-        String lastName = lastNameField_Update.getText().isEmpty() ? currentPlayer.getLastName() : lastNameField_Update.getText();
-        String address = addressField_Update.getText().isEmpty() ? currentPlayer.getAddress() : addressField_Update.getText();
-        String postalCode = postalCodeField_Update.getText().isEmpty() ? currentPlayer.getPostalCode() : postalCodeField_Update.getText();
-        String province = provinceField_Update.getText().isEmpty() ? currentPlayer.getProvince() : provinceField_Update.getText();
-        String phoneNumber = phoneNumberField_Update.getText().isEmpty() ? currentPlayer.getPhoneNumber() : phoneNumberField_Update.getText();
-
-        // Show confirmation alert
         showAlert(
                 "Player Update",
                 "Updated " + firstName + " " + lastName,
                 "You've successfully updated " + firstName + " " + lastName + " from the Player table"
         );
 
-        // Update the player in the database
         databaseManager.updatePlayer(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
     }
 
@@ -260,12 +274,22 @@ public class PlayerGameInfoController {
     }
 
     public void initialize() {
-        List<Player> playerList = new ArrayList<>();
-        List<Game> gameList = new ArrayList<>();
-        List<PlayerAndGame> pagList = new ArrayList<>();
-        playerList = databaseManager.readPlayers();
-        gameList = databaseManager.readGames();
-        pagList = databaseManager.readPlayerAndGames();
+        List<Player> playerList = databaseManager.readPlayers();
+        List<Game> gameList = databaseManager.readGames();
+        List<PlayerAndGame> pagList = databaseManager.readPlayerAndGames();
 
+        // Create observable lists
+        ObservableList<Player> observablePlayerList = FXCollections.observableArrayList(playerList);
+        ObservableList<Game> observableGameList = FXCollections.observableArrayList(gameList);
+        ObservableList<PlayerAndGame> observablePagList = FXCollections.observableArrayList(pagList);
+
+        // Populate the ComboBoxes
+        playerIdComboBox.setItems(observablePlayerList);
+        gameIdComboBox.setItems(observableGameList);
+        playerIdComboBox_Pag.setItems(observablePlayerList);
+        gameIdComboBox_Pag.setItems(observableGameList);
+        playerIdComboBox_Pag_Update.setItems(observablePlayerList);
+        gameIdComboBox_Pag_Update.setItems(observableGameList);
+        pagComboBox.setItems(observablePlayerList);
     }
 }
