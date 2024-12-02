@@ -215,13 +215,25 @@ public class PlayerGameInfoController {
     // Insert Player Button Action
     @FXML
     private void insertPlayer() {
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-        String address = addressField.getText();
-        String postalCode = postalCodeField.getText();
-        String province = provinceField.getText();
-        String phoneNumber = phoneNumberField.getText();
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String address = addressField.getText().trim();
+        String postalCode = postalCodeField.getText().trim();
+        String province = provinceField.getText().trim();
+        String phoneNumber = phoneNumberField.getText().trim();
+
+        // Check if any field is empty
+        if (firstName.isEmpty() || lastName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || province.isEmpty() || phoneNumber.isEmpty()) {
+            showAlert(
+                    "Invalid Input",
+                    "Player Insertion Failed",
+                    "Please fill in all fields before submitting."
+            );
+            return;
+        }
+
         boolean success = databaseManager.addPlayer(firstName, lastName, address, postalCode, province, phoneNumber);
+
         if (success) {
             showAlert(
                     "Player Insertion",
@@ -241,14 +253,27 @@ public class PlayerGameInfoController {
     // Insert Game Button Action
     @FXML
     private void insertGame() {
-        String gameTitle = gameTitleField.getText();
+        String gameTitle = gameTitleField.getText().trim();
+
+        // Check if the game title is empty
+        if (gameTitle.isEmpty()) {
+            showAlert(
+                    "Invalid Input",
+                    "Game Insertion Failed",
+                    "Please provide a game title before submitting."
+            );
+            return;
+        }
+
         boolean success = databaseManager.addGame(gameTitle);
+
         if (success) {
             showAlert(
                     "Game Insertion",
                     "Inserted " + gameTitle,
                     "You've successfully inserted " + gameTitle + " into the Game table"
             );
+            initialize();
         } else {
             showAlert(
                     "Game Insertion Failed",
@@ -256,22 +281,30 @@ public class PlayerGameInfoController {
                     "Please check if your database connection is working."
             );
         }
-
-        initialize();
     }
 
     // Update Player Button Action
     @FXML
     private void updatePlayer() {
-        String firstName = firstNameField_Update.getText();
-        String lastName = lastNameField_Update.getText();
-        String address = addressField_Update.getText();
-        String postalCode = postalCodeField_Update.getText();
-        String province = provinceField_Update.getText();
-        String phoneNumber = phoneNumberField_Update.getText();
+        String firstName = firstNameField_Update.getText().trim();
+        String lastName = lastNameField_Update.getText().trim();
+        String address = addressField_Update.getText().trim();
+        String postalCode = postalCodeField_Update.getText().trim();
+        String province = provinceField_Update.getText().trim();
+        String phoneNumber = phoneNumberField_Update.getText().trim();
 
         // Player to be modified
         int playerId = Integer.parseInt(playerIdComboBox.getValue().toString());
+
+        // Check if any field is empty
+        if (firstName.isEmpty() || lastName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || province.isEmpty() || phoneNumber.isEmpty()) {
+            showAlert(
+                    "Invalid Input",
+                    "Player Update Failed",
+                    "Please fill in all fields before submitting."
+            );
+            return;
+        }
 
         boolean success = databaseManager.updatePlayer(playerId, firstName, lastName, address, postalCode, province, phoneNumber);
 
@@ -281,6 +314,7 @@ public class PlayerGameInfoController {
                     "Updated " + firstName + " " + lastName,
                     "You've successfully updated " + firstName + " " + lastName + " from the Player table"
             );
+            initialize();
         } else {
             showAlert(
                     "Player Update Failed",
@@ -288,16 +322,41 @@ public class PlayerGameInfoController {
                     "Please check if your database connection is working."
             );
         }
-
     }
+
     // Insert Player Button Action
     @FXML
     private void insertPlayerAndGame() {
-        int gameId = Integer.parseInt(gameIdComboBox_Pag.getValue().toString());
-        int playerId = Integer.parseInt(playerIdComboBox_Pag.getValue().toString());
+        Integer gameId = gameIdComboBox_Pag.getValue() != null ? Integer.parseInt(gameIdComboBox_Pag.getValue().toString()) : null;
+        Integer playerId = playerIdComboBox_Pag.getValue() != null ? Integer.parseInt(playerIdComboBox_Pag.getValue().toString()) : null;
         LocalDate playingLocalDate = playingDatePicker.getValue();
+        String scoreText = scoreField.getText().trim();
+
+        // Check if any field is empty or null
+        if (gameId == null || playerId == null || playingLocalDate == null || scoreText.isEmpty()) {
+            showAlert(
+                    "Invalid Input",
+                    "Player and Game Insertion Failed",
+                    "Please fill in all fields before submitting."
+            );
+            return;
+        }
+
+        // Parse the score input
+        int score;
+        try {
+            score = Integer.parseInt(scoreText);
+        } catch (NumberFormatException e) {
+            showAlert(
+                    "Invalid Score",
+                    "Player and Game Insertion Failed",
+                    "Score must be a valid number."
+            );
+            return;
+        }
+
+        // Convert LocalDate to Date
         Date sqlPlayingDate = Date.valueOf(playingLocalDate);
-        int score = Integer.parseInt(scoreField.getText());
 
         boolean success = databaseManager.addPlayerAndGame(gameId, playerId, sqlPlayingDate, score);
         if (success) {
@@ -319,41 +378,32 @@ public class PlayerGameInfoController {
     // Update Game Button Action
     @FXML
     private void updateGame() {
-        String gameTitle = gameTitleField_Update.getText();
+        String gameTitle = gameTitleField_Update.getText().trim();
 
-        // Game to be modified
-        int gameId = Integer.parseInt(gameIdComboBox.getValue().toString());
-
-        boolean success = databaseManager.updateGame(gameId, gameTitle);
-
-        if (success) {
+        // Validate that the game title is not empty
+        if (gameTitle.isEmpty()) {
             showAlert(
-                    "Player And Game Update",
-                    "Updated game_id:" + gameId + " and player_id:" + playerId,
-                    "You've successfully updated game_id:" + gameId + " and player_id:" + playerId + " into the Player table"
+                    "Invalid Input",
+                    "Game Update Failed",
+                    "Please provide a valid game title."
             );
-        } else {
-            showAlert(
-                    "Player and Game Update Failed",
-                    "Failed to update game_id:" + gameId + " and player_id: " + playerId,
-                    "Please check if your database connection is working."
-            );
+            return;
         }
 
+        // Get the selected game ID from the ComboBox
+        Integer gameId = gameIdComboBox.getValue() != null ? Integer.parseInt(gameIdComboBox.getValue().toString()) : null;
 
-    }
+        // Validate that a game ID is selected
+        if (gameId == null) {
+            showAlert(
+                    "Invalid Input",
+                    "Game Update Failed",
+                    "Please select a valid game ID."
+            );
+            return;
+        }
 
-    // Update Player And Game Action
-    @FXML
-    private void updatePlayerAndGame() {
-        // Get input values from the text fields
-        int gameId = Integer.parseInt(gameIdComboBox_Pag_Update.getValue().toString());
-        int playerId = Integer.parseInt(playerIdComboBox_Pag_Update.getValue().toString());
-        LocalDate playingLocalDate = playingDatePicker_Update.getValue();
-        Date sqlPlayingDate = Date.valueOf(playingLocalDate);
-        int score = Integer.parseInt(scoreField_Update.getText());
-
-        boolean success = databaseManager.updatePlayerAndGame(gameId, playerId, sqlPlayingDate, score);
+        boolean success = databaseManager.updateGame(gameId, gameTitle);
 
         if (success) {
             showAlert(
@@ -361,10 +411,91 @@ public class PlayerGameInfoController {
                     "Updated player" + gameTitle,
                     "You've successfully updated " + gameTitle + " from the Game table"
             );
+            initialize();
         } else {
             showAlert(
                     "Game Update Failed",
                     "Failed to update " + gameTitle,
+                    "Please check if your database connection is working."
+            );
+        }
+    }
+
+    // Update Player And Game Action
+    @FXML
+    private void updatePlayerAndGame() {
+        // Get input values from the text fields
+        Integer gameId = gameIdComboBox_Pag_Update.getValue() != null ? Integer.parseInt(gameIdComboBox_Pag_Update.getValue().toString()) : null;
+        Integer playerId = playerIdComboBox_Pag_Update.getValue() != null ? Integer.parseInt(playerIdComboBox_Pag_Update.getValue().toString()) : null;
+        LocalDate playingLocalDate = playingDatePicker_Update.getValue();
+        String scoreText = scoreField_Update.getText().trim();
+
+        // Validate that game ID, player ID, playing date, and score are valid
+        if (gameId == null) {
+            showAlert(
+                    "Invalid Input",
+                    "Update Failed",
+                    "Please select a valid game ID."
+            );
+            return;
+        }
+
+        if (playerId == null) {
+            showAlert(
+                    "Invalid Input",
+                    "Update Failed",
+                    "Please select a valid player ID."
+            );
+            return;
+        }
+
+        if (playingLocalDate == null) {
+            showAlert(
+                    "Invalid Input",
+                    "Update Failed",
+                    "Please select a valid playing date."
+            );
+            return;
+        }
+
+        if (scoreText.isEmpty()) {
+            showAlert(
+                    "Invalid Input",
+                    "Update Failed",
+                    "Please provide a valid score."
+            );
+            return;
+        }
+
+        // Convert score to integer and handle potential invalid input
+        int score;
+        try {
+            score = Integer.parseInt(scoreText);
+        } catch (NumberFormatException e) {
+            showAlert(
+                    "Invalid Input",
+                    "Update Failed",
+                    "Please provide a valid numeric score."
+            );
+            return;
+        }
+
+        // Convert playing date to SQL Date
+        Date sqlPlayingDate = Date.valueOf(playingLocalDate);
+
+        boolean success = databaseManager.updatePlayerAndGame(gameId, playerId, sqlPlayingDate, score);
+
+        if (success) {
+            showAlert(
+                    "Player And Game Update",
+                    "Updated game_id:" + gameId + " and player_id:" + playerId,
+                    "You've successfully updated game_id:" + gameId + " and player_id:" + playerId + " into the Player table"
+            );
+            initialize();
+        } else {
+            showAlert(
+                    "Player and Game Update Failed",
+                    "Failed to update game_id:" + gameId + " and player_id: " + playerId,
                     "Please check if your database connection is working."
             );
         }
