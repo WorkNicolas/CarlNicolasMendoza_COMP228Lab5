@@ -337,8 +337,24 @@ public class PlayerGameInfoController {
     // Insert Player Button Action
     @FXML
     private void insertPlayerAndGame() {
-        Integer gameId = gameIdComboBox_Pag.getValue() != null ? Integer.parseInt(gameIdComboBox_Pag.getValue().toString()) : null;
-        Integer playerId = playerIdComboBox_Pag.getValue() != null ? Integer.parseInt(playerIdComboBox_Pag.getValue().toString()) : null;
+        // Get the selected Game and Player objects
+        Game selectedGame = (Game) gameIdComboBox_Pag.getValue();
+        Player selectedPlayer = (Player) playerIdComboBox_Pag.getValue();
+
+        // Check if the selected game or player is null
+        if (selectedGame == null || selectedPlayer == null) {
+            showAlert(
+                    "Invalid Input",
+                    "Player and Game Insertion Failed",
+                    "Please select a valid game and player."
+            );
+            return;
+        }
+
+        Integer gameId = selectedGame.getGameId();
+        Integer playerId = selectedPlayer.getPlayerId();
+
+        // Get other input values
         LocalDate playingLocalDate = playingDatePicker.getValue();
         String scoreText = scoreField.getText().trim();
 
@@ -368,6 +384,7 @@ public class PlayerGameInfoController {
         // Convert LocalDate to Date
         Date sqlPlayingDate = Date.valueOf(playingLocalDate);
 
+        // Insert player and game relationship into the database
         boolean success = databaseManager.addPlayerAndGame(gameId, playerId, sqlPlayingDate, score);
         if (success) {
             showAlert(
@@ -384,6 +401,7 @@ public class PlayerGameInfoController {
             );
         }
     }
+
 
     // Update Game Button Action
     @FXML
